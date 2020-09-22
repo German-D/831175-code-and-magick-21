@@ -187,7 +187,9 @@
     return width * 1.337;
   };
 
-  var getFireballSpeed = isWindDirection ? 5 : 2;
+  var getFireballSpeed = function(isWindDirection) {
+    return(isWindDirection) ? 5 : 2;
+  };
 
   var getWizardX = function (windowWidth) {
     return (windowWidth - wizardWidth) / 2;
