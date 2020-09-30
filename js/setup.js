@@ -1,12 +1,19 @@
 'use strict';
 
-var setup = document.querySelector('.setup');
-var setupSimilar = document.querySelector('.setup-similar');
-var similarListElement = document.querySelector('.setup-similar-list');
+var setup = document.querySelector(`.setup`);
+var setupSimilar = document.querySelector(`.setup-similar`);
+var similarListElement = document.querySelector(`.setup-similar-list`);
 
-setupSimilar.classList.remove('hidden');
-setup.classList.remove('hidden');
+// Функция удаления класса у ноды
+var deleteClass = function (tag, attr) {
+  tag.classList.remove(attr);
+};
 
+deleteClass(setupSimilar, `hidden`);
+deleteClass(setup, `hidden`);
+
+/* ++++++++++ ++++++++++ ++++++++++ ++++++++++ ++++++++++++++++++++ ++++++++++ */
+// Вводные данные
 var names = [
   `Иван`,
   `Хуан Себастьян`,
@@ -30,12 +37,12 @@ var secondName = [
 ];
 
 var coatColor = [
-    `rgb(101, 137, 164)`,
-    `rgb(241, 43, 107)`,
-    `rgb(146, 100, 161)`,
-    `rgb(56, 159, 117)`,
-    `rgb(215, 210, 55)`,
-    `rgb(0, 0, 0)`,
+  `rgb(101, 137, 164)`,
+  `rgb(241, 43, 107)`,
+  `rgb(146, 100, 161)`,
+  `rgb(56, 159, 117)`,
+  `rgb(215, 210, 55)`,
+  `rgb(0, 0, 0)`,
 ];
 
 var eyesColor = [
@@ -46,32 +53,37 @@ var eyesColor = [
   `green`,
 ];
 
-var getRandomNumberInRange = function (min, max) {
-  return Math.floor(
-    min + Math.random() * (max + 1 - min));
+/* ++++++++++ ++++++++++ ++++++++++ ++++++++++ ++++++++++++++++++++ ++++++++++ */
+// Функция возвращет случайное число от 0 до длинны массива
+var getRandomElement = function (elements) {
+  return Math.floor(Math.random() * elements.length);
 };
 
-var wizards = [];
+/* ++++++++++ ++++++++++ ++++++++++ ++++++++++ ++++++++++++++++++++ ++++++++++ */
+// Функция возвращет массив с заданным количеством магов
+var allWizards = function (quantity) {
+  let wizards = [];
+  for (let i = 0; i < quantity; i++) {
+    wizards.push({
+      name: names[getRandomElement(names)] + ` ` + secondName[getRandomElement(secondName)],
+      coatColor: coatColor[getRandomElement(coatColor)],
+      eyesColor: eyesColor[getRandomElement(eyesColor)],
+    });
+  }
+  return wizards;
+};
 
-for (var i = 0; i < 4; i++) {
-  var getRandomNamePosition = getRandomNumberInRange(0, names.length - 1);
-  var getrandomSecondNamePosition = getRandomNumberInRange(0, secondName.length - 1);
-  wizards.push({
-    name: names[getRandomNamePosition] + ` ` + secondName[getrandomSecondNamePosition],
-    coatColor: coatColor[getRandomNumberInRange(0, coatColor.length - 1)],
-    eyesColor: eyesColor[getRandomNumberInRange(0, eyesColor.length - 1)],
-  });
-}
-
-var similarWizardTemplate = document.querySelector('#similar-wizard-template')
+/* ++++++++++ ++++++++++ ++++++++++ ++++++++++ ++++++++++++++++++++ ++++++++++ */
+// Отрисовка магов
+var similarWizardTemplate = document.querySelector(`#similar-wizard-template`)
   .content
-  .querySelector('.setup-similar-item');
+  .querySelector(`.setup-similar-item`);
 
 var renderWizard = function (wizard, template) {
-  var wizardElement = template.cloneNode(true);
-  var setupSimilarLabel = wizardElement.querySelector('.setup-similar-label');
-  var wizardCoat = wizardElement.querySelector('.wizard-coat');
-  var wizardEyes = wizardElement.querySelector('.wizard-eyes');
+  let wizardElement = template.cloneNode(true);
+  let setupSimilarLabel = wizardElement.querySelector(`.setup-similar-label`);
+  let wizardCoat = wizardElement.querySelector(`.wizard-coat`);
+  let wizardEyes = wizardElement.querySelector(`.wizard-eyes`);
 
   setupSimilarLabel.textContent = wizard.name;
   wizardCoat.style.fill = wizard.coatColor;
@@ -80,10 +92,15 @@ var renderWizard = function (wizard, template) {
   return wizardElement;
 };
 
-var fragment = document.createDocumentFragment();
-for (var k = 0; k < wizards.length; k++) {
-  var newWizard = renderWizard(wizards[k], similarWizardTemplate);
-  fragment.appendChild(newWizard);
-}
+var renderAllWizards = function (wizards) {
 
-similarListElement.appendChild(fragment);
+  let fragment = document.createDocumentFragment();
+  for (let k = 0; k < wizards.length; k++) {
+    let newWizard = renderWizard(wizards[k], similarWizardTemplate);
+    fragment.appendChild(newWizard);
+  }
+
+  similarListElement.appendChild(fragment);
+};
+
+renderAllWizards(allWizards(4));
