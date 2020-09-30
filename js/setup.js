@@ -61,7 +61,7 @@ var getRandomElement = function (elements) {
 
 /* ++++++++++ ++++++++++ ++++++++++ ++++++++++ ++++++++++++++++++++ ++++++++++ */
 // Функция возвращет массив с заданным количеством магов
-var allWizards = function (quantity) {
+var createWizards = function (quantity) {
   let wizards = [];
   for (let i = 0; i < quantity; i++) {
     wizards.push({
@@ -75,12 +75,11 @@ var allWizards = function (quantity) {
 
 /* ++++++++++ ++++++++++ ++++++++++ ++++++++++ ++++++++++++++++++++ ++++++++++ */
 // Отрисовка магов
-var similarWizardTemplate = document.querySelector(`#similar-wizard-template`)
-  .content
-  .querySelector(`.setup-similar-item`);
-
-var renderWizard = function (wizard, template) {
-  let wizardElement = template.cloneNode(true);
+var renderWizard = function (wizard) {
+  let similarWizardTemplate = document.querySelector(`#similar-wizard-template`)
+    .content
+    .querySelector(`.setup-similar-item`);
+  let wizardElement = similarWizardTemplate.cloneNode(true);
   let setupSimilarLabel = wizardElement.querySelector(`.setup-similar-label`);
   let wizardCoat = wizardElement.querySelector(`.wizard-coat`);
   let wizardEyes = wizardElement.querySelector(`.wizard-eyes`);
@@ -96,11 +95,11 @@ var renderAllWizards = function (wizards) {
 
   let fragment = document.createDocumentFragment();
   for (let k = 0; k < wizards.length; k++) {
-    let newWizard = renderWizard(wizards[k], similarWizardTemplate);
+    let newWizard = renderWizard(wizards[k]);
     fragment.appendChild(newWizard);
   }
 
   similarListElement.appendChild(fragment);
 };
 
-renderAllWizards(allWizards(4));
+renderAllWizards(createWizards(4));
