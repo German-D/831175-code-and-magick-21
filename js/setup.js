@@ -1,6 +1,5 @@
 'use strict';
 
-var setup = document.querySelector(`.setup`);
 var setupSimilar = document.querySelector(`.setup-similar`);
 var similarListElement = document.querySelector(`.setup-similar-list`);
 
@@ -10,7 +9,6 @@ var deleteClass = function (tag, attr) {
 };
 
 deleteClass(setupSimilar, `hidden`);
-deleteClass(setup, `hidden`);
 
 /* ++++++++++ ++++++++++ ++++++++++ ++++++++++ ++++++++++++++++++++ ++++++++++ */
 // Вводные данные
@@ -62,8 +60,8 @@ var getRandomElement = function (elements) {
 /* ++++++++++ ++++++++++ ++++++++++ ++++++++++ ++++++++++++++++++++ ++++++++++ */
 // Функция возвращет массив с заданным количеством магов
 var createWizards = function (quantity) {
-  var wizards = [];
-  for (var i = 0; i < quantity; i++) {
+  let wizards = [];
+  for (let i = 0; i < quantity; i++) {
     wizards.push({
       name: names[getRandomElement(names)] + ` ` + secondName[getRandomElement(secondName)],
       coatColor: coatColor[getRandomElement(coatColor)],
@@ -76,13 +74,13 @@ var createWizards = function (quantity) {
 /* ++++++++++ ++++++++++ ++++++++++ ++++++++++ ++++++++++++++++++++ ++++++++++ */
 // Отрисовка магов
 var renderWizard = function (wizard) {
-  var similarWizardTemplate = document.querySelector(`#similar-wizard-template`)
+  let similarWizardTemplate = document.querySelector(`#similar-wizard-template`)
     .content
     .querySelector(`.setup-similar-item`);
-  var wizardElement = similarWizardTemplate.cloneNode(true);
-  var setupSimilarLabel = wizardElement.querySelector(`.setup-similar-label`);
-  var wizardCoat = wizardElement.querySelector(`.wizard-coat`);
-  var wizardEyes = wizardElement.querySelector(`.wizard-eyes`);
+  let wizardElement = similarWizardTemplate.cloneNode(true);
+  let setupSimilarLabel = wizardElement.querySelector(`.setup-similar-label`);
+  let wizardCoat = wizardElement.querySelector(`.wizard-coat`);
+  let wizardEyes = wizardElement.querySelector(`.wizard-eyes`);
 
   setupSimilarLabel.textContent = wizard.name;
   wizardCoat.style.fill = wizard.coatColor;
@@ -93,9 +91,9 @@ var renderWizard = function (wizard) {
 
 var renderAllWizards = function (wizards) {
 
-  var fragment = document.createDocumentFragment();
-  for (var k = 0; k < wizards.length; k++) {
-    var newWizard = renderWizard(wizards[k]);
+  let fragment = document.createDocumentFragment();
+  for (let k = 0; k < wizards.length; k++) {
+    let newWizard = renderWizard(wizards[k]);
     fragment.appendChild(newWizard);
   }
 
@@ -103,3 +101,73 @@ var renderAllWizards = function (wizards) {
 };
 
 renderAllWizards(createWizards(4));
+
+/* ++++++++++ ++++++++++ ++++++++++ ++++++++++ ++++++++++++++++++++ ++++++++++ */
+// Открытие и закрытие окон
+
+var setupWindow = document.querySelector(`.setup`);
+var setupOpen = document.querySelector(`.setup-open`);
+var setupClose = document.querySelector(`.setup-close`);
+var setupOpenIcon = document.querySelector(`.setup-open-icon`);
+var setupUserName = document.querySelector(`.setup-user-name`);
+
+
+/* ++++++++++ ++++++++++ ++++++++++ ++++++++++ ++++++++++++++++++++ ++++++++++ */
+// Функции открытия и закрытия окна
+var popupOpen = function () {
+  setupWindow.classList.remove(`hidden`);
+  setupOpen.removeEventListener(`click`, setupWindowClickHandler);
+  setupOpenIcon.removeEventListener(`keydown`, setupOpenIconKeydownHandler);
+
+  document.addEventListener(`keydown`, documentKeydownHandler);
+  setupClose.addEventListener(`click`, setupCloseClickHandler);
+  setupClose.addEventListener(`keydown`, setupCloseKeydownkHandler);
+};
+
+var popupClose = function () {
+  setupWindow.classList.add(`hidden`);
+  document.removeEventListener(`keydown`, documentKeydownHandler);
+  setupClose.removeEventListener(`click`, setupCloseClickHandler);
+  setupClose.removeEventListener(`keydown`, setupCloseKeydownkHandler);
+
+  setupOpen.addEventListener(`click`, setupWindowClickHandler);
+  setupOpenIcon.addEventListener(`keydown`, setupOpenIconKeydownHandler);
+
+};
+
+/* ++++++++++ ++++++++++ ++++++++++ ++++++++++ ++++++++++++++++++++ ++++++++++ */
+// Обработчики
+
+var setupWindowClickHandler = function () {
+  popupOpen();
+};
+
+var setupCloseClickHandler = function () {
+  setupWindow.classList.add(`hidden`);
+};
+
+var setupOpenIconKeydownHandler = function (evt) {
+  if (evt.key === `Enter`) {
+    popupOpen();
+  }
+};
+
+var documentKeydownHandler = function (evt) {
+  if (evt.key === `Escape`) {
+    if (evt.target === setupUserName) {
+      return;
+    }
+    popupClose();
+  }
+};
+
+
+var setupCloseKeydownkHandler = function (evt) {
+  if (evt.key === `Enter`) {
+    popupClose();
+  }
+};
+
+// Два дефолтных обработчика оставляем
+setupOpen.addEventListener(`click`, setupWindowClickHandler);
+setupOpenIcon.addEventListener(`keydown`, setupOpenIconKeydownHandler);
