@@ -68,8 +68,8 @@ var getRandomElement = function (elements) {
 /* ++++++++++ ++++++++++ ++++++++++ ++++++++++ ++++++++++++++++++++ ++++++++++ */
 // Функция возвращет массив с заданным количеством магов
 var createWizards = function (quantity) {
-  let wizards = [];
-  for (let i = 0; i < quantity; i++) {
+  var wizards = [];
+  for (var i = 0; i < quantity; i++) {
     wizards.push({
       name: names[getRandomElement(names)] + ` ` + secondName[getRandomElement(secondName)],
       coatColor: coatColors[getRandomElement(coatColors)],
@@ -82,13 +82,13 @@ var createWizards = function (quantity) {
 /* ++++++++++ ++++++++++ ++++++++++ ++++++++++ ++++++++++++++++++++ ++++++++++ */
 // Отрисовка магов
 var renderWizard = function (wizard) {
-  let similarWizardTemplate = document.querySelector(`#similar-wizard-template`)
+  var similarWizardTemplate = document.querySelector(`#similar-wizard-template`)
     .content
     .querySelector(`.setup-similar-item`);
-  let wizardElement = similarWizardTemplate.cloneNode(true);
-  let setupSimilarLabel = wizardElement.querySelector(`.setup-similar-label`);
-  let wizardCoat = wizardElement.querySelector(`.wizard-coat`);
-  let wizardEyes = wizardElement.querySelector(`.wizard-eyes`);
+  var wizardElement = similarWizardTemplate.cloneNode(true);
+  var setupSimilarLabel = wizardElement.querySelector(`.setup-similar-label`);
+  var wizardCoat = wizardElement.querySelector(`.wizard-coat`);
+  var wizardEyes = wizardElement.querySelector(`.wizard-eyes`);
 
   setupSimilarLabel.textContent = wizard.name;
   wizardCoat.style.fill = wizard.coatColor;
@@ -99,9 +99,9 @@ var renderWizard = function (wizard) {
 
 var renderAllWizards = function (wizards) {
 
-  let fragment = document.createDocumentFragment();
-  for (let k = 0; k < wizards.length; k++) {
-    let newWizard = renderWizard(wizards[k]);
+  var fragment = document.createDocumentFragment();
+  for (var k = 0; k < wizards.length; k++) {
+    var newWizard = renderWizard(wizards[k]);
     fragment.appendChild(newWizard);
   }
 
@@ -151,7 +151,7 @@ var setupWindowClickHandler = function () {
 };
 
 var setupCloseClickHandler = function () {
-  setupWindow.classList.add(`hidden`);
+  popupClose();
 };
 
 var setupOpenIconKeydownHandler = function (evt) {
