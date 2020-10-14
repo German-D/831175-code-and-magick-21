@@ -34,7 +34,7 @@ var secondName = [
   `Ирвинг`,
 ];
 
-var coatColor = [
+var coatColors = [
   `rgb(101, 137, 164)`,
   `rgb(241, 43, 107)`,
   `rgb(146, 100, 161)`,
@@ -43,12 +43,20 @@ var coatColor = [
   `rgb(0, 0, 0)`,
 ];
 
-var eyesColor = [
+var eyesColors = [
   `black`,
   `red`,
   `blue`,
   `yellow`,
   `green`,
+];
+
+var fireColors = [
+  `#ee4830`,
+  `#30a8ee`,
+  `#5ce6c0`,
+  `#e848d5`,
+  `#e6e848`,
 ];
 
 /* ++++++++++ ++++++++++ ++++++++++ ++++++++++ ++++++++++++++++++++ ++++++++++ */
@@ -64,8 +72,8 @@ var createWizards = function (quantity) {
   for (let i = 0; i < quantity; i++) {
     wizards.push({
       name: names[getRandomElement(names)] + ` ` + secondName[getRandomElement(secondName)],
-      coatColor: coatColor[getRandomElement(coatColor)],
-      eyesColor: eyesColor[getRandomElement(eyesColor)],
+      coatColor: coatColors[getRandomElement(coatColors)],
+      eyesColor: eyesColors[getRandomElement(eyesColors)],
     });
   }
   return wizards;
@@ -171,3 +179,33 @@ var setupCloseKeydownkHandler = function (evt) {
 // Два дефолтных обработчика оставляем
 setupOpen.addEventListener(`click`, setupWindowClickHandler);
 setupOpenIcon.addEventListener(`keydown`, setupOpenIconKeydownHandler);
+
+
+/* ++++++++++ ++++++++++ ++++++++++ ++++++++++ ++++++++++++++++++++ ++++++++++ */
+// Смена цвета мантии, глаз и фаербола
+var setupWizardForm = document.querySelector(`.setup-wizard-form`);
+var wizardCoat = document.querySelector(`.setup-wizard .wizard-coat`);
+var wizardEyes = document.querySelector(`.setup-wizard .wizard-eyes`);
+var setupFireball = document.querySelector(`.setup-fireball-wrap`);
+
+var wizardCoatClickHandler = function (evt) {
+  var newCoatColor = coatColors[getRandomElement(coatColors)];
+  evt.currentTarget.style.fill = newCoatColor;
+  setupWizardForm.querySelector(`input[name=coat-color]`).value = newCoatColor;
+};
+
+var wizardEyesClickHandler = function (evt) {
+  var newEyesColor = eyesColors[getRandomElement(eyesColors)];
+  evt.currentTarget.style.fill = newEyesColor;
+  setupWizardForm.querySelector(`input[name=eyes-color]`).value = newEyesColor;
+};
+
+var setupFireballClickHandler = function (evt) {
+  var newFireColor = fireColors[getRandomElement(fireColors)];
+  evt.currentTarget.style.backgroundColor = newFireColor;
+  evt.currentTarget.querySelector(`input`).value = newFireColor;
+};
+
+wizardCoat.addEventListener(`click`, wizardCoatClickHandler);
+wizardEyes.addEventListener(`click`, wizardEyesClickHandler);
+setupFireball.addEventListener(`click`, setupFireballClickHandler);
