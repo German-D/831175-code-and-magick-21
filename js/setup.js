@@ -100,8 +100,6 @@
   var setupClose = document.querySelector(`.setup-close`);
   var setupOpenIcon = document.querySelector(`.setup-open-icon`);
   var setupUserName = document.querySelector(`.setup-user-name`);
-  var setupWindowX;
-  var setupWindowY;
 
   /* ++++++++++ ++++++++++ ++++++++++ ++++++++++ ++++++++++++++++++++ ++++++++++ */
   // Функции открытия и закрытия окна
@@ -114,16 +112,12 @@
     document.addEventListener(`keydown`, documentKeydownHandler);
     setupClose.addEventListener(`click`, setupCloseClickHandler);
     setupClose.addEventListener(`keydown`, setupCloseKeydownkHandler);
-
-    // Сохраняю позицию окна при закрытии
-    setupWindowX = setupWindow.offsetLeft;
-    setupWindowY = setupWindow.offsetTop;
   };
 
   var popupClose = function () {
     // Сохраняю позицию окна при закрытии
-    setupWindow.style.left = setupWindowX + `px`;
-    setupWindow.style.top = setupWindowY + `px`;
+    setupWindow.style.left = ``;
+    setupWindow.style.top = ``;
 
     setupWindow.classList.add(`hidden`);
     document.removeEventListener(`keydown`, documentKeydownHandler);
