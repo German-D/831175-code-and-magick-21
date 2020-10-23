@@ -8,6 +8,6 @@
   };
 
   window.utils = {
-    getRandomElement
+    getRandomElement,
   };
 })();

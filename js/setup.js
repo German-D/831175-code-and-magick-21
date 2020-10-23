@@ -100,11 +100,13 @@
   var setupClose = document.querySelector(`.setup-close`);
   var setupOpenIcon = document.querySelector(`.setup-open-icon`);
   var setupUserName = document.querySelector(`.setup-user-name`);
-
+  var setupWindowX;
+  var setupWindowY;
 
   /* ++++++++++ ++++++++++ ++++++++++ ++++++++++ ++++++++++++++++++++ ++++++++++ */
   // Функции открытия и закрытия окна
   var popupOpen = function () {
+
     setupWindow.classList.remove(`hidden`);
     setupOpen.removeEventListener(`click`, setupWindowClickHandler);
     setupOpenIcon.removeEventListener(`keydown`, setupOpenIconKeydownHandler);
@@ -112,9 +114,17 @@
     document.addEventListener(`keydown`, documentKeydownHandler);
     setupClose.addEventListener(`click`, setupCloseClickHandler);
     setupClose.addEventListener(`keydown`, setupCloseKeydownkHandler);
+
+    // Сохраняю позицию окна при закрытии
+    setupWindowX = setupWindow.offsetLeft;
+    setupWindowY = setupWindow.offsetTop;
   };
 
   var popupClose = function () {
+    // Сохраняю позицию окна при закрытии
+    setupWindow.style.left = setupWindowX + `px`;
+    setupWindow.style.top = setupWindowY + `px`;
+
     setupWindow.classList.add(`hidden`);
     document.removeEventListener(`keydown`, documentKeydownHandler);
     setupClose.removeEventListener(`click`, setupCloseClickHandler);
@@ -122,7 +132,6 @@
 
     setupOpen.addEventListener(`click`, setupWindowClickHandler);
     setupOpenIcon.addEventListener(`keydown`, setupOpenIconKeydownHandler);
-
   };
 
   /* ++++++++++ ++++++++++ ++++++++++ ++++++++++ ++++++++++++++++++++ ++++++++++ */
@@ -164,6 +173,6 @@
 
   window.setup = {
     coatColors,
-    eyesColors
+    eyesColors,
   };
 })();
