@@ -11,19 +11,36 @@
     `#e6e848`,
   ];
 
+  var coatColors = [
+    `rgb(101, 137, 164)`,
+    `rgb(241, 43, 107)`,
+    `rgb(146, 100, 161)`,
+    `rgb(56, 159, 117)`,
+    `rgb(215, 210, 55)`,
+    `rgb(0, 0, 0)`,
+  ];
+
+  var eyesColors = [
+    `black`,
+    `red`,
+    `blue`,
+    `yellow`,
+    `green`,
+  ];
+
   var setupWizardForm = document.querySelector(`.setup-wizard-form`);
   var wizardCoat = document.querySelector(`.setup-wizard .wizard-coat`);
   var wizardEyes = document.querySelector(`.setup-wizard .wizard-eyes`);
   var setupFireball = document.querySelector(`.setup-fireball-wrap`);
 
   var wizardCoatClickHandler = function (evt) {
-    var newCoatColor = window.setup.coatColors[window.utils.getRandomElement(window.setup.coatColors)];
+    var newCoatColor = coatColors[window.utils.getRandomElement(coatColors)];
     evt.currentTarget.style.fill = newCoatColor;
     setupWizardForm.querySelector(`input[name=coat-color]`).value = newCoatColor;
   };
 
   var wizardEyesClickHandler = function (evt) {
-    var newEyesColor = window.setup.eyesColors[window.utils.getRandomElement(window.setup.eyesColors)];
+    var newEyesColor = eyesColors[window.utils.getRandomElement(eyesColors)];
     evt.currentTarget.style.fill = newEyesColor;
     setupWizardForm.querySelector(`input[name=eyes-color]`).value = newEyesColor;
   };

@@ -1,88 +1,36 @@
 'use strict';
 
 (function () {
-
+  var MAX_SIMILAR_WIZARD_COUNT = 4;
   var setupSimilar = document.querySelector(`.setup-similar`);
   var similarListElement = document.querySelector(`.setup-similar-list`);
   setupSimilar.classList.remove(`hidden`);
-
-  /* ++++++++++ ++++++++++ ++++++++++ ++++++++++ ++++++++++++++++++++ ++++++++++ */
-  // Вводные данные
-  var names = [
-    `Иван`,
-    `Хуан Себастьян`,
-    `Мария`,
-    `Кристоф`,
-    `Виктор`,
-    `Юлия`,
-    `Люпита`,
-    `Вашингтон`,
-  ];
-
-  var secondName = [
-    `да Марья`,
-    `Верон`,
-    `Мирабелла`,
-    `Вальц`,
-    `Онопко`,
-    `Топольницкая`,
-    `Нионго`,
-    `Ирвинг`,
-  ];
-
-  var coatColors = [
-    `rgb(101, 137, 164)`,
-    `rgb(241, 43, 107)`,
-    `rgb(146, 100, 161)`,
-    `rgb(56, 159, 117)`,
-    `rgb(215, 210, 55)`,
-    `rgb(0, 0, 0)`,
-  ];
-
-  var eyesColors = [
-    `black`,
-    `red`,
-    `blue`,
-    `yellow`,
-    `green`,
-  ];
-
-  /* ++++++++++ ++++++++++ ++++++++++ ++++++++++ ++++++++++++++++++++ ++++++++++ */
-  // Функция возвращет массив с заданным количеством магов
-  var createWizards = function (quantity) {
-    var wizards = [];
-    for (var i = 0; i < quantity; i++) {
-      wizards.push({
-        name: names[window.utils.getRandomElement(names)] + ` ` + secondName[window.utils.getRandomElement(secondName)],
-        coatColor: coatColors[window.utils.getRandomElement(coatColors)],
-        eyesColor: eyesColors[window.utils.getRandomElement(eyesColors)],
-      });
-    }
-    return wizards;
-  };
+  var setupWizardForm = document.querySelector(`.setup-wizard-form`);
+  var setupWindow = document.querySelector(`.setup`);
 
   /* ++++++++++ ++++++++++ ++++++++++ ++++++++++ ++++++++++++++++++++ ++++++++++ */
   // Отрисовка магов
+
   var renderWizard = function (wizard) {
     var similarWizardTemplate = document.querySelector(`#similar-wizard-template`)
     .content
     .querySelector(`.setup-similar-item`);
     var wizardElement = similarWizardTemplate.cloneNode(true);
+
     var setupSimilarLabel = wizardElement.querySelector(`.setup-similar-label`);
     var wizardCoat = wizardElement.querySelector(`.wizard-coat`);
     var wizardEyes = wizardElement.querySelector(`.wizard-eyes`);
 
     setupSimilarLabel.textContent = wizard.name;
-    wizardCoat.style.fill = wizard.coatColor;
-    wizardEyes.style.fill = wizard.eyesColor;
+    wizardCoat.style.fill = wizard.colorCoat;
+    wizardEyes.style.fill = wizard.colorEyes;
 
     return wizardElement;
   };
 
   var renderAllWizards = function (wizards) {
-
     var fragment = document.createDocumentFragment();
-    for (var k = 0; k < wizards.length; k++) {
+    for (var k = 0; k < MAX_SIMILAR_WIZARD_COUNT; k++) {
       var newWizard = renderWizard(wizards[k]);
       fragment.appendChild(newWizard);
     }
@@ -90,12 +38,34 @@
     similarListElement.appendChild(fragment);
   };
 
-  renderAllWizards(createWizards(4));
+  var successHandler = function (wizards) {
+    renderAllWizards(wizards);
+  };
+
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement(`div`);
+    node.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: red;`;
+    node.style.position = `absolute`;
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = `30px`;
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement(`afterbegin`, node);
+  };
+
+  window.backend.loadWizards(successHandler, errorHandler);
+
+  setupWizardForm.addEventListener(`submit`, function (evt) {
+    window.backend.saveForm(new FormData(setupWizardForm), function () {
+      setupWindow.classList.add(`hidden`);
+    }, errorHandler);
+    evt.preventDefault();
+  });
 
   /* ++++++++++ ++++++++++ ++++++++++ ++++++++++ ++++++++++++++++++++ ++++++++++ */
   // Открытие и закрытие окон
 
-  var setupWindow = document.querySelector(`.setup`);
   var setupOpen = document.querySelector(`.setup-open`);
   var setupClose = document.querySelector(`.setup-close`);
   var setupOpenIcon = document.querySelector(`.setup-open-icon`);
@@ -154,7 +124,6 @@
     }
   };
 
-
   var setupCloseKeydownkHandler = function (evt) {
     if (evt.key === `Enter`) {
       popupClose();
@@ -164,9 +133,4 @@
   // Два дефолтных обработчика оставляем
   setupOpen.addEventListener(`click`, setupWindowClickHandler);
   setupOpenIcon.addEventListener(`keydown`, setupOpenIconKeydownHandler);
-
-  window.setup = {
-    coatColors,
-    eyesColors,
-  };
 })();
