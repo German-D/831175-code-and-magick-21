@@ -2,8 +2,8 @@
 
 (function () {
 
-  var LOADURL = `https://21.javascript.pages.academy/code-and-magick/data`;
-  var SAVEURL = `https://21.javascript.pages.academy/code-and-magick`;
+  var LOAD_URL = `https://21.javascript.pages.academy/code-and-magick/data`;
+  var SAVE_URL = `https://21.javascript.pages.academy/code-and-magick`;
   var TIMEOUT_IN_MS = 10000;
 
   var StatusCode = {
@@ -33,7 +33,7 @@
 
     xhr.timeout = TIMEOUT_IN_MS;
 
-    xhr.open(`GET`, LOADURL);
+    xhr.open(`GET`, LOAD_URL);
     xhr.send();
   };
 
@@ -49,7 +49,7 @@
       }
     });
 
-    xhr.open(`POST`, SAVEURL);
+    xhr.open(`POST`, SAVE_URL);
     xhr.send(data);
   };
 
