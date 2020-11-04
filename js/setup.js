@@ -1,11 +1,10 @@
 'use strict';
 
 (function () {
-
+  var MAX_SIMILAR_WIZARD_COUNT = 4;
   var setupSimilar = document.querySelector(`.setup-similar`);
   var similarListElement = document.querySelector(`.setup-similar-list`);
   setupSimilar.classList.remove(`hidden`);
-  var MAX_SIMILAR_WIZARD_COUNT = 4;
   var setupWizardForm = document.querySelector(`.setup-wizard-form`);
   var setupWindow = document.querySelector(`.setup`);
 
@@ -29,7 +28,7 @@
     return wizardElement;
   };
 
-  var successHandler = function (wizards) {
+  var renderAllWizards = function (wizards) {
     var fragment = document.createDocumentFragment();
     for (var k = 0; k < MAX_SIMILAR_WIZARD_COUNT; k++) {
       var newWizard = renderWizard(wizards[k]);
@@ -37,6 +36,10 @@
     }
 
     similarListElement.appendChild(fragment);
+  };
+
+  var successHandler = function (wizards) {
+    renderAllWizards(wizards);
   };
 
   var errorHandler = function (errorMessage) {
@@ -56,7 +59,7 @@
   setupWizardForm.addEventListener(`submit`, function (evt) {
     window.backend.saveForm(new FormData(setupWizardForm), function () {
       setupWindow.classList.add(`hidden`);
-    });
+    }, errorHandler);
     evt.preventDefault();
   });
 

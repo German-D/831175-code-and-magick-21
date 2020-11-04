@@ -2,13 +2,13 @@
 
 (function () {
 
-  var loadURL = `https://21.javascript.pages.academy/code-and-magick/data`;
-  var saveURL = `https://21.javascript.pages.academy/code-and-magick`;
+  var LOADURL = `https://21.javascript.pages.academy/code-and-magick/data`;
+  var SAVEURL = `https://21.javascript.pages.academy/code-and-magick`;
+  var TIMEOUT_IN_MS = 10000;
 
   var StatusCode = {
     OK: 200
   };
-  var TIMEOUT_IN_MS = 10000;
 
   var loadWizards = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
@@ -33,19 +33,23 @@
 
     xhr.timeout = TIMEOUT_IN_MS;
 
-    xhr.open(`GET`, loadURL);
+    xhr.open(`GET`, LOADURL);
     xhr.send();
   };
 
-  var saveForm = function (data, onSuccess) {
+  var saveForm = function (data, onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
 
     xhr.addEventListener(`load`, function () {
-      onSuccess();
+      if (xhr.status === StatusCode.OK) {
+        onSuccess();
+      } else {
+        onError(`Статус ответа: ` + xhr.status + ` ` + xhr.statusText);
+      }
     });
 
-    xhr.open(`POST`, saveURL);
+    xhr.open(`POST`, SAVEURL);
     xhr.send(data);
   };
 
