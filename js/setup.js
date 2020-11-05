@@ -29,6 +29,10 @@
   };
 
   var renderAllWizards = function (wizards) {
+    var setupSimilarItemCollection = document.querySelectorAll(`.setup-similar-item`);
+    setupSimilarItemCollection.forEach(function (item) {
+      item.remove();
+    });
     var fragment = document.createDocumentFragment();
     for (var k = 0; k < MAX_SIMILAR_WIZARD_COUNT; k++) {
       var newWizard = renderWizard(wizards[k]);
@@ -38,28 +42,10 @@
     similarListElement.appendChild(fragment);
   };
 
-  var successHandler = function (wizards) {
-    renderAllWizards(wizards);
-  };
-
-  var errorHandler = function (errorMessage) {
-    var node = document.createElement(`div`);
-    node.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: red;`;
-    node.style.position = `absolute`;
-    node.style.left = 0;
-    node.style.right = 0;
-    node.style.fontSize = `30px`;
-
-    node.textContent = errorMessage;
-    document.body.insertAdjacentElement(`afterbegin`, node);
-  };
-
-  window.backend.loadWizards(successHandler, errorHandler);
-
   setupWizardForm.addEventListener(`submit`, function (evt) {
     window.backend.saveForm(new FormData(setupWizardForm), function () {
       setupWindow.classList.add(`hidden`);
-    }, errorHandler);
+    }, window.colorize.errorHandler);
     evt.preventDefault();
   });
 
@@ -133,4 +119,8 @@
   // Два дефолтных обработчика оставляем
   setupOpen.addEventListener(`click`, setupWindowClickHandler);
   setupOpenIcon.addEventListener(`keydown`, setupOpenIconKeydownHandler);
+
+  window.setup = {
+    renderAllWizards,
+  };
 })();

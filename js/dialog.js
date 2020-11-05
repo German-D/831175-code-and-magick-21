@@ -5,9 +5,7 @@
   // Перемещение окна
 
   var setupDialogElement = document.querySelector(`.setup`);
-  var dialogHandle = setupDialogElement.querySelector(`.upload`);
-  var setupDialogElementX;
-  var setupDialogElementY;
+  var dialogHandle = setupDialogElement.querySelector(`.upload`);:
 
   dialogHandle.addEventListener(`mousedown`, function (evt) {
     evt.preventDefault();
@@ -57,10 +55,5 @@
     document.addEventListener(`mousemove`, onMouseMove);
     document.addEventListener(`mouseup`, onMouseUp);
   });
-
-  window.dialog = {
-    setupDialogElementX,
-    setupDialogElementY,
-  };
 
 })();
